@@ -124,5 +124,5 @@ test('Add gzip size', (t) => {
   t.deepEqual(kibi.gzipSize, '106.83 KiB', msg);
   // Show in SI
   const si = addGzipSize({ absolutePath: imagePath }, { useKibibyteRepresentation: false });
-  t.deepEqual(si.gzipSize, '109.4 KB', msg);
+  t.deepEqual(si.gzipSize, '109.4 kB', msg);
 });

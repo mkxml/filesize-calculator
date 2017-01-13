@@ -31,7 +31,7 @@ var KIBIBYTE_REPRESENTATION = [
 
 var SI_REPRESENTATION = [
   'bytes',
-  'KB',
+  'kB',
   'MB',
   'GB',
   'TB',
