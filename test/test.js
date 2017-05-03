@@ -59,18 +59,18 @@ test('Add pretty size', (t) => {
   // 1-byte case
   const one = addPrettySize({ size: 1 }, {});
   t.deepEqual(one.prettySize, '1 byte', msg);
-  // Small case (Kibibyte)
-  const smallKibi = addPrettySize({ size: 574 }, { useKibibyteRepresentation: true });
-  t.deepEqual(smallKibi.prettySize, '574 bytes', msg);
-  // Large case (Kibibyte)
-  const largeKibi = addPrettySize({ size: 1073741824 }, { useKibibyteRepresentation: true });
-  t.deepEqual(largeKibi.prettySize, '1 GiB', msg);
-  // Small case (SI)
-  const small = addPrettySize({ size: 574 }, { useKibibyteRepresentation: false });
-  t.deepEqual(small.prettySize, '574 bytes', msg);
-  // Large case (SI)
-  const large = addPrettySize({ size: 1073741824 }, { useKibibyteRepresentation: false });
-  t.deepEqual(large.prettySize, '1.07 GB', msg);
+  // Small case (IEC)
+  const smallIEC = addPrettySize({ size: 574 }, { useDecimal: false });
+  t.deepEqual(smallIEC.prettySize, '574 bytes', msg);
+  // Large case (IEC)
+  const largeIEC = addPrettySize({ size: 1073741824 }, { useDecimal: false });
+  t.deepEqual(largeIEC.prettySize, '1 GiB', msg);
+  // Small case (Decimal)
+  const smallDecimal = addPrettySize({ size: 574 }, { useDecimal: true });
+  t.deepEqual(smallDecimal.prettySize, '574 bytes', msg);
+  // Large case (Decimal)
+  const largeDecimal = addPrettySize({ size: 1073741824 }, { useDecimal: true });
+  t.deepEqual(largeDecimal.prettySize, '1.07 GB', msg);
 });
 
 test('Add mime type', (t) => {
@@ -119,10 +119,10 @@ test('Add pretty date info', (t) => {
 test('Add gzip size', (t) => {
   t.plan(2);
   const msg = 'addGzipSize() should add the gzip pretty size properly scaled';
-  // Show in Kibibyte form
-  const kibi = addGzipSize({ absolutePath: imagePath }, { useKibibyteRepresentation: true });
-  t.deepEqual(kibi.gzipSize, '106.83 KiB', msg);
+  // Show in IEC representation
+  const IEC = addGzipSize({ absolutePath: imagePath }, { useDecimal: false });
+  t.deepEqual(IEC.gzipSize, '106.83 KiB', msg);
   // Show in SI
-  const si = addGzipSize({ absolutePath: imagePath }, { useKibibyteRepresentation: false });
-  t.deepEqual(si.gzipSize, '109.4 kB', msg);
+  const decimal = addGzipSize({ absolutePath: imagePath }, { useDecimal: true });
+  t.deepEqual(decimal.gzipSize, '109.4 kB', msg);
 });

@@ -9,15 +9,15 @@ var imageSize;
 var gzipSize;
 var moment;
 
-var KIBIBYTE_BASE = 1024;
+var DECIMAL_BASE = 1000;
 
-var SI_BASE = 1000;
+var IEC_BASE = 1024;
 
 var FORMAT_24_HOUR = 'HH:mm:ss';
 
 var FORMAT_12_HOUR = 'h:mm:ss a';
 
-var KIBIBYTE_REPRESENTATION = [
+var IEC_SUFIXES = [
   'bytes',
   'KiB',
   'MiB',
@@ -29,7 +29,7 @@ var KIBIBYTE_REPRESENTATION = [
   'YiB'
 ];
 
-var SI_REPRESENTATION = [
+var DECIMAL_SUFIXES = [
   'bytes',
   'kB',
   'MB',
@@ -89,12 +89,12 @@ function getPrettySize(size, base, suffixes) {
 function addPrettySize(info, options) {
   var base;
   var suffixes;
-  var useKibibyteRepresentation = options.useKibibyteRepresentation;
+  var useDecimal = options.useDecimal;
   var size = info.size;
   if (size === 0) return assign(info, { prettySize: '0 bytes' });
   if (size === 1) return assign(info, { prettySize: '1 byte' });
-  base = (useKibibyteRepresentation) ? KIBIBYTE_BASE : SI_BASE;
-  suffixes = (useKibibyteRepresentation) ? KIBIBYTE_REPRESENTATION : SI_REPRESENTATION;
+  base = (useDecimal) ? DECIMAL_BASE : IEC_BASE;
+  suffixes = (useDecimal) ? DECIMAL_SUFIXES : IEC_SUFIXES;
   return assign(info, { prettySize: getPrettySize(size, base, suffixes) });
 }
 
@@ -121,9 +121,9 @@ function addPrettyDateInfo(info, options) {
 
 function addGzipSize(info, options) {
   var size;
-  var useKibibyteRepresentation = options.useKibibyteRepresentation;
-  var base = (useKibibyteRepresentation) ? KIBIBYTE_BASE : SI_BASE;
-  var suffixes = (useKibibyteRepresentation) ? KIBIBYTE_REPRESENTATION : SI_REPRESENTATION;
+  var useDecimal = options.useDecimal;
+  var base = (useDecimal) ? DECIMAL_BASE : IEC_BASE;
+  var suffixes = (useDecimal) ? DECIMAL_SUFIXES : IEC_SUFIXES;
   gzipSize = gzipSize || require('gzip-size');
   size = gzipSize.sync(fs.readFileSync(info.absolutePath));
   return assign(info, { gzipSize: getPrettySize(size, base, suffixes) });
