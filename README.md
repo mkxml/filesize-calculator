@@ -1,4 +1,6 @@
 # filesize-calculator
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/mkxml/filesize-calculator.svg)](https://greenkeeper.io/)
 [![Build]](https://travis-ci.org/mkxml/filesize-calculator) [![SemVer]](http://semver.org/) [![Coverage]](https://coveralls.io/github/mkxml/filesize-calculator?branch=master) [![License]](LICENSE)
 
 Quick set of functions to load and gather file information. Used in [atom-filsize](https://github.com/mkxml/atom-filesize) and [vscode-filesize](https://github.com/mkxml/vscode-filesize).
