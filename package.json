@@ -31,7 +31,7 @@
     "nyc": "^10.3.0"
   },
   "dependencies": {
-    "es6-promise": "^4.1.0",
+    "es6-promise": "^4.2.0",
     "gzip-size": "^3.0.0",
     "image-size": "^0.5.1",
     "lodash.assign": "^4.2.0",
