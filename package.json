@@ -1,6 +1,6 @@
 {
   "name": "filesize-calculator",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "Simple functions to load files and gather metadata",
   "main": "index.js",
   "scripts": {
