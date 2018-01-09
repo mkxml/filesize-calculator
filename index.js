@@ -1,5 +1,5 @@
 // Replace promise and Object.assign
-var Promise = require('es6-promise');
+var Promise = require('bluebird');
 var assign = require('lodash.assign');
 
 // Lazy load node modules
@@ -51,6 +51,9 @@ var IMAGE_FORMATS = [
   'image/webp',
   'image/vnd.adobe.photoshop'
 ];
+
+// Support cancelable info requests
+Promise.config({ cancellation: true });
 
 function loadFileInfoAsync(filepath) {
   fs = fs || require('fs');
