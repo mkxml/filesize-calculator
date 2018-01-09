@@ -100,7 +100,7 @@ function addPrettySize(info, options) {
 
 function addMimeTypeInfo(info) {
   mime = mime || require('mime');
-  return assign(info, { mimeType: mime.lookup(info.absolutePath) });
+  return assign(info, { mimeType: mime.getType(info.absolutePath) });
 }
 
 function addImageInfo(info) {
