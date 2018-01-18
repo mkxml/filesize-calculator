@@ -55,6 +55,15 @@ var IMAGE_FORMATS = [
 // Support cancelable info requests
 Promise.config({ cancellation: true });
 
+function extractInfo(filepath, stats) {
+  return {
+    absolutePath: filepath,
+    size: stats.size,
+    dateCreated: stats.birthtime.toISOString(),
+    dateChanged: stats.mtime.toISOString()
+  };
+}
+
 function loadFileInfoAsync(filepath) {
   fs = fs || require('fs');
   return new Promise(function getFileAsync(resolve, reject) {
@@ -62,12 +71,7 @@ function loadFileInfoAsync(filepath) {
       fs.stat(filepath, function getFileStatsAsync(err, stats) {
         var info;
         if (!err) {
-          info = {
-            absolutePath: filepath,
-            size: stats.size,
-            dateCreated: stats.birthtime.toISOString(),
-            dateChanged: stats.mtime.toISOString()
-          };
+          info = extractInfo(filepath, stats);
           resolve(info);
         } else {
           reject(err);
@@ -77,6 +81,17 @@ function loadFileInfoAsync(filepath) {
       reject(new Error('Please provide a valid filepath'));
     }
   });
+}
+
+function loadFileInfoSync(filepath) {
+  var stats;
+  fs = fs || require('fs');
+  try {
+    stats = fs.statSync(filepath);
+  } catch (e) {
+    throw Error('Please provide a valid filepath');
+  }
+  return extractInfo(filepath, stats);
 }
 
 function getPrettySize(size, base, suffixes) {
@@ -133,6 +148,7 @@ function addGzipSize(info, options) {
 }
 
 module.exports = {
+  loadFileInfoSync: loadFileInfoSync,
   loadFileInfoAsync: loadFileInfoAsync,
   addPrettySize: addPrettySize,
   addMimeTypeInfo: addMimeTypeInfo,

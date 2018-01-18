@@ -2,6 +2,7 @@ const path = require('path');
 const Promise = require('bluebird');
 const { test } = require('ava');
 const {
+  loadFileInfoSync,
   loadFileInfoAsync,
   addPrettySize,
   addMimeTypeInfo,
@@ -13,6 +14,42 @@ const {
 const fixturePath = path.resolve(__dirname, 'fixture.txt');
 const imagePath = path.resolve(__dirname, 'fixture.jpg');
 const errorPath = path.resolve(__dirname, 'notfound.txt');
+
+test('Load file sync', (t) => {
+  t.plan(4);
+  const msg = 'loadFileInfoSync() should read the file metadata';
+  const {
+    absolutePath,
+    size,
+    dateCreated,
+    dateChanged,
+  } = loadFileInfoSync(fixturePath);
+  console.log(dateCreated); // eslint-disable-line no-console
+  t.deepEqual(absolutePath, fixturePath, msg);
+  t.deepEqual(size, 574, msg);
+  t.truthy(dateCreated, msg);
+  t.truthy(dateChanged, msg);
+});
+
+test('Invalid filepath sync', (t) => {
+  t.plan(1);
+  const msg = 'loadFileInfoSync() should throw error if passed an invalid filepath argument';
+  try {
+    loadFileInfoSync(null);
+  } catch (e) {
+    t.deepEqual('Please provide a valid filepath', e.message, msg);
+  }
+});
+
+test('File does not exist sync', (t) => {
+  t.plan(1);
+  const msg = 'loadFileInfoSync() should throw error if trying to load an unexistent file';
+  try {
+    loadFileInfoSync(errorPath);
+  } catch (e) {
+    t.pass(msg);
+  }
+});
 
 test('Load file', Promise.coroutine(function* tryLoadFile(t) {
   t.plan(4);
