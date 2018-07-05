@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "bluebird": "^3.5.1",
-    "gzip-size": "^4.1.0",
+    "gzip-size": "^5.0.0",
     "image-size": "^0.6.2",
     "lodash.assign": "^4.2.0",
     "mime": "^2.3.1",
