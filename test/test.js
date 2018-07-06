@@ -24,7 +24,6 @@ test('Load file sync', (t) => {
     dateCreated,
     dateChanged,
   } = loadFileInfoSync(fixturePath);
-  console.log(dateCreated); // eslint-disable-line no-console
   t.deepEqual(absolutePath, fixturePath, msg);
   t.deepEqual(size, 574, msg);
   t.truthy(dateCreated, msg);
@@ -60,7 +59,6 @@ test('Load file', Promise.coroutine(function* tryLoadFile(t) {
     dateCreated,
     dateChanged,
   } = yield loadFileInfoAsync(fixturePath);
-  console.log(dateCreated); // eslint-disable-line no-console
   t.deepEqual(absolutePath, fixturePath, msg);
   t.deepEqual(size, 574, msg);
   t.truthy(dateCreated, msg);
