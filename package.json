@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/mkxml/filesize-calculator#readme",
   "devDependencies": {
-    "ava": "^0.25.0",
+    "ava": "^1.0.1",
     "coveralls": "^3.0.2",
     "eslint": "^5.0.1",
     "eslint-config-airbnb-base": "^13.0.0",
