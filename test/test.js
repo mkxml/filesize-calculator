@@ -1,6 +1,6 @@
 const path = require('path');
 const Promise = require('bluebird');
-const { test } = require('ava');
+const test = require('ava');
 const {
   loadFileInfoSync,
   loadFileInfoAsync,
