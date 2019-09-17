@@ -32,7 +32,7 @@
   "dependencies": {
     "bluebird": "^3.5.4",
     "gzip-size": "^5.1.1",
-    "image-size": "^0.7.4",
+    "image-size": "^0.8.0",
     "lodash.assign": "^4.2.0",
     "mime": "^2.4.3",
     "moment": "^2.24.0"
