@@ -1,3 +1,5 @@
+'use strict';
+
 // Replace promise and Object.assign
 var Promise = require('bluebird');
 var assign = require('lodash.assign');
