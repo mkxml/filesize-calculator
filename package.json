@@ -4,7 +4,7 @@
   "description": "Simple functions to load files and gather metadata",
   "main": "index.js",
   "scripts": {
-    "test": "eslint index.js test && nyc ava test",
+    "test": "eslint index.js test && nyc ava test/test.js",
     "report-coverage": "nyc report --reporter=html"
   },
   "repository": {
@@ -22,19 +22,19 @@
   },
   "homepage": "https://github.com/mkxml/filesize-calculator#readme",
   "devDependencies": {
-    "ava": "^1.4.1",
-    "coveralls": "^3.0.3",
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.17.2",
-    "nyc": "^14.1.1"
+    "ava": "^3.6.0",
+    "coveralls": "^3.0.11",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "nyc": "^15.0.1"
   },
   "dependencies": {
-    "bluebird": "^3.5.4",
+    "bluebird": "^3.7.2",
     "gzip-size": "^5.1.1",
-    "image-size": "^0.7.4",
+    "image-size": "^0.8.3",
     "lodash.assign": "^4.2.0",
-    "mime": "^2.4.3",
+    "mime": "^2.4.4",
     "moment": "^2.24.0"
   }
 }
