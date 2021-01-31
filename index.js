@@ -9,6 +9,7 @@ var fs;
 var mime;
 var imageSize;
 var gzipSize;
+var brotliSize;
 var moment;
 
 var DECIMAL_BASE = 1000;
@@ -149,6 +150,16 @@ function addGzipSize(info, options) {
   return assign(info, { gzipSize: getPrettySize(size, base, suffixes) });
 }
 
+function addBrotliSize(info, options) {
+  var size;
+  var useDecimal = options.useDecimal;
+  var base = (useDecimal) ? DECIMAL_BASE : IEC_BASE;
+  var suffixes = (useDecimal) ? DECIMAL_SUFIXES : IEC_SUFIXES;
+  brotliSize = brotliSize || require('brotli-size');
+  size = brotliSize.sync(fs.readFileSync(info.absolutePath));
+  return assign(info, { brotliSize: getPrettySize(size, base, suffixes) });
+}
+
 module.exports = {
   loadFileInfoSync: loadFileInfoSync,
   loadFileInfoAsync: loadFileInfoAsync,
@@ -156,5 +167,6 @@ module.exports = {
   addMimeTypeInfo: addMimeTypeInfo,
   addImageInfo: addImageInfo,
   addPrettyDateInfo: addPrettyDateInfo,
-  addGzipSize: addGzipSize
+  addGzipSize: addGzipSize,
+  addBrotliSize: addBrotliSize
 };

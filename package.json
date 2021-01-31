@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "bluebird": "^3.7.2",
+    "brotli-size": "^4.0.0",
     "gzip-size": "^5.1.1",
     "image-size": "^0.8.3",
     "lodash.assign": "^4.2.0",

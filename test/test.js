@@ -9,6 +9,7 @@ const {
   addImageInfo,
   addPrettyDateInfo,
   addGzipSize,
+  addBrotliSize,
 } = require('../index');
 
 const fixturePath = path.resolve(__dirname, 'fixture.txt');
@@ -160,4 +161,15 @@ test('Add gzip size', (t) => {
   // Show in SI
   const decimal = addGzipSize({ absolutePath: imagePath }, { useDecimal: true });
   t.deepEqual(decimal.gzipSize, '109.4 kB', msg);
+});
+
+test('Add brotli size', (t) => {
+  t.plan(2);
+  const msg = 'addBrotliSize() should add the brotli pretty size properly scaled';
+  // Show in IEC representation
+  const IEC = addBrotliSize({ absolutePath: imagePath }, { useDecimal: false });
+  t.deepEqual(IEC.brotliSize, '107.17 KiB', msg);
+  // Show in SI
+  const decimal = addBrotliSize({ absolutePath: imagePath }, { useDecimal: true });
+  t.deepEqual(decimal.brotliSize, '109.75 kB', msg);
 });
