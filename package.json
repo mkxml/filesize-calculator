@@ -30,12 +30,10 @@
     "nyc": "^15.1.0"
   },
   "dependencies": {
-    "bluebird": "^3.7.2",
     "brotli-size": "^4.0.0",
+    "dayjs": "^1.10.4",
     "gzip-size": "^6.0.0",
     "image-size": "^0.9.5",
-    "lodash.assign": "^4.2.0",
-    "mime": "^2.5.2",
-    "moment": "^2.29.1"
+    "mime": "^2.5.2"
   }
 }
