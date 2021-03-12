@@ -1,5 +1,4 @@
 const path = require('path');
-const Promise = require('bluebird');
 const test = require('ava');
 const {
   loadFileInfoSync,
@@ -51,7 +50,7 @@ test('File does not exist sync', (t) => {
   }
 });
 
-test('Load file', Promise.coroutine(function* tryLoadFile(t) {
+test('Load file', async (t) => {
   t.plan(4);
   const msg = 'loadFileInfoAsync() should read the file metadata';
   const {
@@ -59,32 +58,32 @@ test('Load file', Promise.coroutine(function* tryLoadFile(t) {
     size,
     dateCreated,
     dateChanged,
-  } = yield loadFileInfoAsync(fixturePath);
+  } = await loadFileInfoAsync(fixturePath);
   t.deepEqual(absolutePath, fixturePath, msg);
   t.deepEqual(size, 574, msg);
   t.truthy(dateCreated, msg);
   t.truthy(dateChanged, msg);
-}));
+});
 
-test('Invalid filepath', Promise.coroutine(function* tryLoadFile(t) {
+test('Invalid filepath', async (t) => {
   t.plan(1);
   const msg = 'loadFileInfoAsync() should throw error if passed an invalid filepath argument';
   try {
-    yield loadFileInfoAsync(null);
+    await loadFileInfoAsync(null);
   } catch (e) {
     t.deepEqual('Please provide a valid filepath', e.message, msg);
   }
-}));
+});
 
-test('File does not exist', Promise.coroutine(function* tryLoadFile(t) {
+test('File does not exist', async (t) => {
   t.plan(1);
   const msg = 'loadFileInfoAsync() should throw error if trying to load an unexistent file';
   try {
-    yield loadFileInfoAsync(errorPath);
+    await loadFileInfoAsync(errorPath);
   } catch (e) {
     t.pass(msg);
   }
-}));
+});
 
 test('Add pretty size', (t) => {
   t.plan(6);
