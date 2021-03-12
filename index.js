@@ -1,26 +1,21 @@
-'use strict';
-
-// Replace promise and Object.assign
-var Promise = require('bluebird');
-var assign = require('lodash.assign');
+const dayjs = require('dayjs');
 
 // Lazy load node modules
-var fs;
-var mime;
-var imageSize;
-var gzipSize;
-var brotliSize;
-var moment;
+let fs;
+let mime;
+let imageSize;
+let gzipSize;
+let brotliSize;
 
-var DECIMAL_BASE = 1000;
+const DECIMAL_BASE = 1000;
 
-var IEC_BASE = 1024;
+const IEC_BASE = 1024;
 
-var FORMAT_24_HOUR = 'HH:mm:ss';
+const FORMAT_24_HOUR = 'HH:mm:ss';
 
-var FORMAT_12_HOUR = 'h:mm:ss a';
+const FORMAT_12_HOUR = 'h:mm:ss a';
 
-var IEC_SUFIXES = [
+const IEC_SUFIXES = [
   'bytes',
   'KiB',
   'MiB',
@@ -29,10 +24,10 @@ var IEC_SUFIXES = [
   'PiB',
   'EiB',
   'ZiB',
-  'YiB'
+  'YiB',
 ];
 
-var DECIMAL_SUFIXES = [
+const DECIMAL_SUFIXES = [
   'bytes',
   'kB',
   'MB',
@@ -41,10 +36,10 @@ var DECIMAL_SUFIXES = [
   'PB',
   'EB',
   'ZB',
-  'YB'
+  'YB',
 ];
 
-var IMAGE_FORMATS = [
+const IMAGE_FORMATS = [
   'image/bmp',
   'image/jpeg',
   'image/png',
@@ -52,27 +47,29 @@ var IMAGE_FORMATS = [
   'image/tiff',
   'image/x-tiff',
   'image/webp',
-  'image/vnd.adobe.photoshop'
+  'image/vnd.adobe.photoshop',
 ];
 
+dayjs.extend(require('dayjs/plugin/advancedFormat'));
+
 // Support cancelable info requests
-Promise.config({ cancellation: true });
+// Promise.config({ cancellation: true });
 
 function extractInfo(filepath, stats) {
   return {
     absolutePath: filepath,
     size: stats.size,
     dateCreated: stats.birthtime.toISOString(),
-    dateChanged: stats.mtime.toISOString()
+    dateChanged: stats.mtime.toISOString(),
   };
 }
 
 function loadFileInfoAsync(filepath) {
   fs = fs || require('fs');
-  return new Promise(function getFileAsync(resolve, reject) {
+  return new Promise((resolve, reject) => {
     if (filepath) {
-      fs.stat(filepath, function getFileStatsAsync(err, stats) {
-        var info;
+      fs.stat(filepath, (err, stats) => {
+        let info;
         if (!err) {
           info = extractInfo(filepath, stats);
           resolve(info);
@@ -87,7 +84,7 @@ function loadFileInfoAsync(filepath) {
 }
 
 function loadFileInfoSync(filepath) {
-  var stats;
+  let stats;
   fs = fs || require('fs');
   try {
     stats = fs.statSync(filepath);
@@ -98,75 +95,71 @@ function loadFileInfoSync(filepath) {
 }
 
 function getPrettySize(size, base, suffixes) {
-  var scale = Math.floor(Math.log(size) / Math.log(base));
-  var activeSuffix = suffixes[scale];
-  var scaledSize = size / Math.pow(base, scale);
+  const scale = Math.floor(Math.log(size) / Math.log(base));
+  const activeSuffix = suffixes[scale];
+  // eslint-disable-next-line no-restricted-properties
+  const scaledSize = size / Math.pow(base, scale);
   // Round size with a decimal precision of 2
-  var fixedScale = Math.round(scaledSize + 'e+2');
-  var roundedSize = Number(fixedScale + 'e-2');
-  return roundedSize + ' ' + activeSuffix;
+  const fixedScale = Math.round(`${scaledSize}e+2`);
+  const roundedSize = Number(`${fixedScale}e-2`);
+  return `${roundedSize} ${activeSuffix}`;
 }
 
 function addPrettySize(info, options) {
-  var base;
-  var suffixes;
-  var useDecimal = options.useDecimal;
-  var size = info.size;
-  if (size === 0) return assign(info, { prettySize: '0 bytes' });
-  if (size === 1) return assign(info, { prettySize: '1 byte' });
-  base = (useDecimal) ? DECIMAL_BASE : IEC_BASE;
-  suffixes = (useDecimal) ? DECIMAL_SUFIXES : IEC_SUFIXES;
-  return assign(info, { prettySize: getPrettySize(size, base, suffixes) });
+  const { useDecimal } = options;
+  const { size } = info;
+  if (size === 0) return Object.assign(info, { prettySize: '0 bytes' });
+  if (size === 1) return Object.assign(info, { prettySize: '1 byte' });
+  const base = (useDecimal) ? DECIMAL_BASE : IEC_BASE;
+  const suffixes = (useDecimal) ? DECIMAL_SUFIXES : IEC_SUFIXES;
+  return Object.assign(info, { prettySize: getPrettySize(size, base, suffixes) });
 }
 
 function addMimeTypeInfo(info) {
   mime = mime || require('mime');
-  return assign(info, { mimeType: mime.getType(info.absolutePath) });
+  return Object.assign(info, { mimeType: mime.getType(info.absolutePath) });
 }
 
 function addImageInfo(info) {
   if (!info.mimeType || !IMAGE_FORMATS.includes(info.mimeType)) return info;
   imageSize = imageSize || require('image-size');
-  return assign(info, { dimmensions: imageSize(info.absolutePath) });
+  return Object.assign(info, { dimmensions: imageSize(info.absolutePath) });
 }
 
 function addPrettyDateInfo(info, options) {
-  var use24HourFormat = options.use24HourFormat;
-  var hourFormat = (use24HourFormat) ? FORMAT_24_HOUR : FORMAT_12_HOUR;
-  moment = moment || require('moment');
-  return assign(info, {
-    prettyDateCreated: moment(info.dateCreated).format('MMMM Do YYYY, ' + hourFormat),
-    prettyDateChanged: moment(info.dateChanged).format('MMMM Do YYYY, ' + hourFormat)
+  const { use24HourFormat } = options;
+  const hourFormat = (use24HourFormat) ? FORMAT_24_HOUR : FORMAT_12_HOUR;
+  return Object.assign(info, {
+    prettyDateCreated: dayjs(info.dateCreated).format(`MMMM Do YYYY, ${hourFormat}`),
+    prettyDateChanged: dayjs(info.dateChanged).format(`MMMM Do YYYY, ${hourFormat}`),
   });
 }
 
 function addGzipSize(info, options) {
-  var size;
-  var useDecimal = options.useDecimal;
-  var base = (useDecimal) ? DECIMAL_BASE : IEC_BASE;
-  var suffixes = (useDecimal) ? DECIMAL_SUFIXES : IEC_SUFIXES;
+  const { useDecimal } = options;
+  const base = (useDecimal) ? DECIMAL_BASE : IEC_BASE;
+  const suffixes = (useDecimal) ? DECIMAL_SUFIXES : IEC_SUFIXES;
   gzipSize = gzipSize || require('gzip-size');
-  size = gzipSize.sync(fs.readFileSync(info.absolutePath));
-  return assign(info, { gzipSize: getPrettySize(size, base, suffixes) });
+  const size = gzipSize.sync(fs.readFileSync(info.absolutePath));
+  return Object.assign(info, { gzipSize: getPrettySize(size, base, suffixes) });
 }
 
 function addBrotliSize(info, options) {
-  var size;
-  var useDecimal = options.useDecimal;
-  var base = (useDecimal) ? DECIMAL_BASE : IEC_BASE;
-  var suffixes = (useDecimal) ? DECIMAL_SUFIXES : IEC_SUFIXES;
+  const { useDecimal } = options;
+  const base = (useDecimal) ? DECIMAL_BASE : IEC_BASE;
+  const suffixes = (useDecimal) ? DECIMAL_SUFIXES : IEC_SUFIXES;
   brotliSize = brotliSize || require('brotli-size');
-  size = brotliSize.sync(fs.readFileSync(info.absolutePath));
-  return assign(info, { brotliSize: getPrettySize(size, base, suffixes) });
+  const size = brotliSize.sync(fs.readFileSync(info.absolutePath));
+  return Object.assign(info, { brotliSize: getPrettySize(size, base, suffixes) });
 }
 
 module.exports = {
-  loadFileInfoSync: loadFileInfoSync,
-  loadFileInfoAsync: loadFileInfoAsync,
-  addPrettySize: addPrettySize,
-  addMimeTypeInfo: addMimeTypeInfo,
-  addImageInfo: addImageInfo,
-  addPrettyDateInfo: addPrettyDateInfo,
-  addGzipSize: addGzipSize,
-  addBrotliSize: addBrotliSize
+  loadFileInfoSync,
+  loadFileInfoAsync,
+  addPrettySize,
+  addMimeTypeInfo,
+  addImageInfo,
+  addPrettyDateInfo,
+  addGzipSize,
+  addBrotliSize,
 };

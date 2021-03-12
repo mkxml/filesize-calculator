@@ -5,5 +5,5 @@
   "rules": {
     "global-require": "off"
   },
-  "extends": "airbnb-base/legacy"
+  "extends": "airbnb-base"
 }
