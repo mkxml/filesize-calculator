@@ -116,7 +116,8 @@ function addPrettySize(info, options) {
 }
 
 function addMimeTypeInfo(info) {
-  mime = mime || require('mime');
+  const ext = info.absolutePath.split('.').pop();
+  if (ext === 'ts' || ext === 'tsx') return Object.assign(info, { mimeType: 'application/typescript' });
   return Object.assign(info, { mimeType: mime.getType(info.absolutePath) });
 }
 
