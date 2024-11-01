@@ -116,6 +116,7 @@ function addPrettySize(info, options) {
 }
 
 function addMimeTypeInfo(info) {
+  mime = mime || require('mime').default;
   const ext = info.absolutePath.split('.').pop();
   if (ext === 'ts' || ext === 'tsx') return Object.assign(info, { mimeType: 'application/typescript' });
   return Object.assign(info, { mimeType: mime.getType(info.absolutePath) });
@@ -140,8 +141,8 @@ function addGzipSize(info, options) {
   const { useDecimal } = options;
   const base = (useDecimal) ? DECIMAL_BASE : IEC_BASE;
   const suffixes = (useDecimal) ? DECIMAL_SUFIXES : IEC_SUFIXES;
-  gzipSize = gzipSize || require('gzip-size');
-  const size = gzipSize.sync(fs.readFileSync(info.absolutePath));
+  gzipSize = gzipSize || require('gzip-size').gzipSizeSync;
+  const size = gzipSize(fs.readFileSync(info.absolutePath));
   return Object.assign(info, { gzipSize: getPrettySize(size, base, suffixes) });
 }
 

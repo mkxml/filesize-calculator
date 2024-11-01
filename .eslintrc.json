@@ -1,9 +1,10 @@
 {
   "env": {
-    "node": true
+    "node": true,
+    "es6": true
   },
   "rules": {
     "global-require": "off"
   },
-  "extends": "airbnb-base"
+  "extends": "prettier"
 }
